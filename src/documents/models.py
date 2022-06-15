@@ -25,15 +25,21 @@ class Quote(models.Model):
         max_length=3, choices=TYPES, default='MXN', help_text='Moneda')
     commercial_terms = models.TextField(help_text='Condiciones Comerciales')
 
+    def items(self):
+        return QuoteItem.objects.filter(quote=self)
+
     def subtotal(self):
         subtotal = 0
-        items = QuoteItem.objects.filter(quote=self)
+        items = self.items()
         for item in items:
             subtotal += item.total()
         return round(float(subtotal), 2)
 
     def total(self):
-        return round(float(self.subtotal() * self.iva), 2)
+        return round(float(self.subtotal() * (1+(self.iva/100))), 2)
+
+    def only_iva(self):
+        return round(self.total()-self.subtotal(), 2)
 
 
 class QuoteItem(models.Model):
@@ -51,7 +57,7 @@ class QuoteItem(models.Model):
             total = self.quantity * self.unit_price
         except Exception:
             total = 0
-        return total
+        return round(float(total), 2)
 
 
 class PurchaseOrder(models.Model):
@@ -100,4 +106,4 @@ class PurchaseOrderItem(models.Model):
             total = self.quantity * self.unit_price
         except Exception:
             total = 0
-        return total
+        return round(float(total), 2)

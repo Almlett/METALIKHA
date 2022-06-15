@@ -1,13 +1,119 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    
+    <style>
+      *{
+        font-size:10px;
+      }
+      .header{
+        height: 130px;
+        width: 100%;
+      }
+      .row-header{
+        font-weight: bold;
+        background-color: #13b1ad;
+      }
+      .row-header-items{
+        font-weight: bold;
+        background-color: #5b6169;
+        color:white;
+      }
+      table{
+        width: 100%;
+      }
+      td{
+        text-align: center;
+      }
+      .item, .item-td{
+        border: 1px solid #e0e0e0;
+      }
+    </style>
   </head>
   <body>
-    <h1>PDF</h1>
-   {{quote.company}}
+    <div class="header">
+      <img src="https://i.ibb.co/JjkR9GL/header.png" alt="header" border="0">
+    </div>
+   <table>
+    <tr class="row-header">
+      <td colspan="3">EMPRESA</td>
+      <td colspan="2">CONTACTO</td>
+      <td>FECHA</td>
+      <td>CIUDAD</td>
+    </tr>
+    <tr>
+      <td colspan="3">{{quote.company}}</td>
+      <td colspan="2">{{quote.contact}}</td>
+      <td>{{quote.date}}</td>
+      <td>{{quote.city}}</td>
+    </tr>
+    <tr class="row-header">
+      <td>TELEFONO</td>
+      <td colspan="2">DIRECCION</td>
+      <td colspan="2">CORREO</td>
+      <td>IVA</td>
+      <td>T.PAGO</td>
+    </tr>
+    <tr>
+      <td>{{quote.phonenumber}}</td>
+      <td colspan="2">{{quote.address}}</td>
+      <td colspan="2">{{quote.email}}</td>
+      <td>{{quote.iva}} %</td>
+      <td>{{quote.payment_type}}</td>
+    </tr>
+   </table>
+
+   <!-- Iterate quote items and generate table-->
+
+   <table>
+    <tr class="row-header-items">
+      <td>ITEM</td>
+      <td>DESCRIPCION</td>
+      <td>CANTIDAD</td>
+      <td>UNIDAD</td>
+      <td>P. UNITARIO</td>
+      <td>Total</td>
+    </tr>
+    {% for item in quote.items %}
+    <tr class="item">
+      <td class="item-td">{{ forloop.counter }}</td>
+      <td class="item-td">{{item.description}}</td>
+      <td class="item-td">{{item.quantity}}</td>
+      <td class="item-td">{{item.unit}}</td>
+      <td class="item-td">{{item.unit_price}}</td>
+      <td class="item-td">{{item.total}}</td>
+    </tr>
+    {% endfor %}
+   
+   
+    <tr>
+      <td class="row-header-items">Moneda</td>
+      <td>{{quote.money_type}}</td>
+      <td></td>
+      <td></td>
+      <td class="row-header-items">SUBTOTAL</td>
+      <td>{{quote.subtotal}}</td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td class="row-header-items">IVA {{quote.iva}}%</td>
+      <td>{{quote.only_iva}}</td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td class="row-header-items">TOTAL</td>
+      <td>{{quote.total}}</td>
+    </tr>
+    
+  </table>
    
   </body>
 </html>

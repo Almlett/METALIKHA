@@ -71,7 +71,11 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'staticfiles': 'django.templatetags.static',
+            }
         },
+
     },
 ]
 
@@ -132,6 +136,12 @@ USE_TZ = True
 STATIC_ROOT = BASE_DIR.child("static")
 
 STATIC_URL = '/static/'
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    # where I want to host the static files i.e img, js & css
+    os.path.join(BASE_DIR, 'src/documents/static')
+]
 
 # STATICFILES_DIRS = (
 #    os.path.join(BASE_DIR, 'src/app/assets'),
