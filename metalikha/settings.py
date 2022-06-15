@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'documents'
+    'documents',
+    'wkhtmltopdf'
 ]
 
 MIDDLEWARE = [
@@ -132,9 +133,9 @@ STATIC_ROOT = BASE_DIR.child("static")
 
 STATIC_URL = '/static/'
 
-#STATICFILES_DIRS = (
+# STATICFILES_DIRS = (
 #    os.path.join(BASE_DIR, 'src/app/assets'),
-#)
+# )
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True

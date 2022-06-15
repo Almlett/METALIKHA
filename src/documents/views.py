@@ -1,13 +1,26 @@
 from django.shortcuts import render
-from documents.forms import QuoteForm
+from documents.models import Quote, QuoteItem, PurchaseOrder, PurchaseOrderItem
+from django.views import generic
+from wkhtmltopdf.views import PDFTemplateResponse
 
 
-def quote_new(request):
-    if request.method == "quote":
-        form = QuoteForm(request.quote)
-        if form.is_valid():
-            quote.save()
-            return redirect('quote_detail', pk=quote.pk)
-    else:
-        form = QuoteForm()
-    return render(request, 'quote_edit.html', {'form': form})
+class QuoteListView(generic.ListView):
+    model = Quote
+
+
+class QuotePDFView(generic.DetailView):
+    model = Quote
+    template_name = 'documents/quote_pdf.html'
+    context = {'title': 'Hello World!'}
+
+    def get(self, request, *args, **kwargs):
+        self.context['quote'] = self.get_object()
+
+        response = PDFTemplateResponse(request=request,
+                                       template=self.template_name,
+                                       filename="quoute.pdf",
+                                       context=self.context,
+                                       show_content_in_browser=True,
+                                       #cmd_options={'margin-top': 50, }
+                                       )
+        return response

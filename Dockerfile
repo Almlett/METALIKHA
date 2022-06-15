@@ -1,23 +1,5 @@
-FROM python:3.8.2-alpine
-RUN set -e; \
-        apk add --no-cache --virtual .build-deps \
-                gcc \
-                libc-dev \
-                linux-headers \
-                mariadb-dev \
-                python3-dev \
-        ;
+FROM python:3.8.2
 
-#Dependencia para Criptography >  pip install django-eventstream
-RUN apk add --no-cache \
-        libressl-dev \
-        musl-dev \
-        libffi-dev && \
-    pip install --no-cache-dir cryptography==2.1.4 && \
-    apk del \
-        libressl-dev \
-        musl-dev \
-        libffi-dev
 
 # set work directory
 WORKDIR /usr/src/app
@@ -32,6 +14,13 @@ RUN /usr/local/bin/python -m pip install --upgrade pip
 COPY ./requirements.txt /usr/src/app/requirements.txt
 
 RUN pip install -r requirements.txt
+
+
+RUN wget https://s3.amazonaws.com/shopify-managemant-app/wkhtmltopdf-0.9.9-static-amd64.tar.bz2
+RUN tar xvjf wkhtmltopdf-0.9.9-static-amd64.tar.bz2
+RUN mv wkhtmltopdf-amd64 /usr/local/bin/wkhtmltopdf
+RUN chmod +x /usr/local/bin/wkhtmltopdf
+
 
 
 # copy entrypoint.sh
